@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Detection</title>
+    <script>
+        function redirectBasedOnDevice() {
+            // Check if the user is on a mobile device, including iPhone
+            const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+            // Redirect based on the device type
+            if (isMobile) {
+                window.location.href = "mobile.html";
+            } else {
+                window.location.href = "main.html";
+            }
+        }
+
+        // Run the function on page load
+        window.onload = redirectBasedOnDevice;
+    </script>
+</head>
+<body>
+    <p>Redirecting based on your device...</p>
+</body>
+</html>
