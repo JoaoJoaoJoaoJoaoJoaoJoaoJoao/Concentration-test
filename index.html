@@ -6,14 +6,20 @@
     <title>Device Detection</title>
     <script>
         function redirectBasedOnDevice() {
-            // Check if the user is on a mobile device, including iPhone
-            const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            const userAgent = navigator.userAgent;
 
-            // Redirect based on the device type
-            if (isMobile) {
-                window.location.href = "mobile.html";
+            // Detect tablets, including iPad
+            const isTablet = /iPad|Tablet|SM-T|GT-|Pixel C|Nexus 7|Nexus 9/i.test(userAgent);
+
+            // Detect general mobile devices (excluding tablets)
+            const isMobile = /Mobi|Android|iPhone|iPod/i.test(userAgent) && !isTablet;
+
+            if (isTablet) {
+                window.location.href = "main.html"; // Redirect tablets to main.html
+            } else if (isMobile) {
+                window.location.href = "mobile.html"; // Redirect phones to mobile.html
             } else {
-                window.location.href = "main.html";
+                window.location.href = "main.html"; // Redirect desktops to main.html
             }
         }
 
