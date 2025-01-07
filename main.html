@@ -274,9 +274,52 @@
     </div>
   </div>
   <script>
-    const materials = [
-      "Ambergris", "Bergamot", "Cedarwood", "Cinnamon", "Clary Sage", "Frankincense", "Geranium", "Jasmine", "Lavender", "Lemon", "Lemongrass", "Musk", "Myrrh", "Neroli", "Oakmoss", "Orange Blossom", "Patchouli", "Peppermint", "Rose", "Rosemary", "Sandalwood", "Tonka Bean", "Vanilla", "Vetiver", "Ylang-Ylang"
-    ].sort();
+const materials = [
+  "Ambergris", "Bergamot", "Cedarwood", "Cinnamon", "Clary Sage", 
+  "Frankincense", "Geranium", "Jasmine", "Lavender", "Lemon", 
+  "Lemongrass", "Musk", "Myrrh", "Neroli", "Oakmoss", "Orange Blossom", 
+  "Patchouli", "Peppermint", "Rose", "Rosemary", "Sandalwood", 
+  "Tonka Bean", "Vanilla", "Vetiver", "Ylang-Ylang", "Hexyl Acetate", 
+  "cis-3-Hexenyl Acetate", "Phenylethyl Alcohol", "Linalool", "Limonene", 
+  "Coumarin", "Iso E Super", "Ambroxan", "Benzoin", "Labdanum", 
+  "Calone", "Eugenol", "Heliotropin", "Hedione", "Galbanum", "Cis-3-Hexenol", 
+  "Geraniol", "Citronellol", "Alpha-Pinene", "Beta-Pinene", "Farnesol", 
+  "Methyl Anthranilate", "Vanillin", "Ethyl Vanillin", "Aldehyde C10", 
+  "Aldehyde C11", "Aldehyde C12", "Aldehyde C14", "Aldehyde C16", 
+  "Aldehyde C18", "Octanal", "Nonanal", "Decanal", "Benzyl Acetate", 
+  "Amyl Acetate", "Isoamyl Acetate", "Ethyl Maltol", "Civet", "Castoreum", 
+  "Tolu Balsam", "Styrax", "Opoponax", "Costus", "Angelica Root", 
+  "Carrot Seed", "Pink Pepper", "Cardamom", "Cumin", "Saffron", "Ginger", 
+  "Grapefruit", "Mandarin Orange", "Green Tea", "Black Currant", 
+  "White Musk", "Mineral Accord", "Hinoki Wood", "Shiso Leaf", "Birch Tar", 
+  "Cypress", "Fir Balsam", "Mimosa", "Tuberose", "Carnation", "Gardenia", 
+  "Peach Aldehyde", "Melonal", "Ethyl Butyrate", "Methyl Benzoate", "Benzyl Benzoate",
+  "Cistus", "Mimosa Absolute", "Orange Peel", "Marjoram", "Basil", 
+  "Ginger Lily", "Lime", "Mandarin", "Tonka Bean Absolute", "Agarwood",
+  "Tuberose Absolute", "Saffron Absolute", "Muguet", "Bergamot Essential Oil", 
+  "Linalyl Acetate", "Laurel Leaf", "Peppermint Essential Oil", "Sandalwood Essential Oil", 
+  "Nootkatone", "Clove", "Tea Tree Oil", "Rosewood", "Cucumber Essence", 
+  "Apple Blossom", "Acacia", "Lemon Verbena", "Pine Needle", "Ginger Root Extract", 
+  "Cedarwood Essential Oil", "Benzoin Resin", "Labdanum Absolute", "Vanilla Absolute", 
+  "Wormwood", "Caraway", "Plumeria", "Violet Leaf", "Coriander Seed", 
+  "Sage", "Geranium Essential Oil", "Patchouli Essential Oil", "Sichuan Pepper", 
+  "Bitter Almond", "Mimosa Oil", "Palo Santo", "Pink Peppercorn", "Ceylon Cinnamon", 
+  "Musk Ambrette", "Musk Xylene", "Ambroxan", "Cashmeran", "Galaxolide", 
+  "Helvetolide", "Muscone", "Musk Sauvage", "Musk Rose", "Musk Clear", 
+  "Musk T", "Musk Fragrans", "Musk Benzyl Acetate", 
+  // Added fruity and aquatic materials
+  "Cantaloupe", "Peach", "Apricot", "Blackberry", "Raspberry", 
+  "Strawberry", "Blueberry", "Pineapple", "Passionfruit", "Litchi", 
+  "Papaya", "Melon", "Pomegranate", "Guava", "Mandarine", "Tangerine", 
+  "Grapes", "Dragonfruit", "Watermelon", "Kiwi", "Red Currant", 
+  "Cassis", "Cherry", "Tropical Fruit Accord", "Citrus Accord", 
+  "Cucumber", "Sea Breeze Accord", "Rain Accord", "Aquatic Accord", 
+  "Aqua Notes", "Marine Notes", "Ocean Accord", "Sea Salt", "Water Notes", 
+  "Lotus", "Neroli Water", "Aloe Vera", "Coconut Water", "Bamboo Accord", 
+  "Mimosa Blossom", "Aquatic Floral Accord", "Fresh Linen", "Cedarwood Aquatic", 
+  "Watery Green Accord", "Oceanic Musk", "Salted Air", "Aquatic Moss"
+].sort();
+
 
     const materialList = document.getElementById('material-list');
     const selectedMaterials = document.getElementById('selected-materials');
