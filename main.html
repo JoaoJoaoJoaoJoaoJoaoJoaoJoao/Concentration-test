@@ -240,12 +240,30 @@
     .total-cost span {
       font-weight: normal;
     }
+
+    .search-bar-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .search-bar {
+      width: 80%;
+      max-width: 500px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1.1em;
+    }
   </style>
   
 </head>
 <body>
   <div class="material-selector">
     <h2>Select Materials</h2>
+    <div class="search-bar-container">
+      <input type="text" class="search-bar" placeholder="Search materials..." oninput="filterMaterials(this.value)">
+    </div>
     <div id="material-list">
       <!-- Materials dynamically generated -->
     </div>
@@ -437,6 +455,18 @@ const materials = [
           plugins: {
             legend: { position: 'bottom' },
           },
+        }
+      });
+    }
+
+    function filterMaterials(query) {
+      const materialItems = document.querySelectorAll('.material-item');
+      materialItems.forEach(item => {
+        const materialName = item.textContent.toLowerCase();
+        if (materialName.includes(query.toLowerCase())) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
         }
       });
     }
