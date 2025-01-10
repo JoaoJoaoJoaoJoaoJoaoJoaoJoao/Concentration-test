@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="UI Perfumery offers innovative tools for perfume creation, including a powerful Formula Maker and a comprehensive Perfumers Dictionary. Perfect for hobbyists and professionals alike, explore our resources to design unique fragrances and elevate your perfumery journey.">
+    <title>UI Perfumery – Perfume Creation Tools & Resources</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #555;
+            max-width: 600px;
+        }
+
+        /* Subscribe Button */
+        .subscribe-btn {
+            display: inline-block;
+            background-color: #FF0000;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .subscribe-btn:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+        /* Button Container at Bottom */
+        .button-container {
+            display: flex;
+            gap: 75px; /* Increased space between buttons */
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            text-align: center;
+        }
+
+        /* Image Buttons */
+        .image-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+        }
+        .image-btn img {
+            max-width: 200px; /* Increased size of the images */
+            height: auto;
+            transition: transform 0.2s ease;
+        }
+        .image-btn img:hover {
+            transform: scale(1.1);
+        }
+        .image-btn span {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Welcome to UI Perfumery</h1>
+        <p>Discover tools and resources to craft your perfect scent. Use our Formula Maker to design perfumes, explore our Perfumers Dictionary for inspiration, and please subscribe to our YouTube channel</p>
+    </header>
+
+    <!-- Subscribe Button at Top -->
+    <a class="subscribe-btn" href="https://www.youtube.com" target="_blank">Subscribe to our YouTube</a>
+
+    <!-- Image Buttons at Bottom -->
+    <div class="button-container">
+        <!-- Perfumers Dictionary Button -->
+        <a class="image-btn" href="PerfumersDictionary.html">
+            <img src="book.png" alt="Perfumers Dictionary">
+            <span>Perfumers Dictionary</span>
+        </a>
+
+        <!-- Formula Maker Button -->
+        <a class="image-btn" href="FormulaMakerdevicecheck.html">
+            <img src="image2.png" alt="Formula Maker">
+            <span>Formula Maker</span>
+        </a>
+    </div>
+
+</body>
+</html>
