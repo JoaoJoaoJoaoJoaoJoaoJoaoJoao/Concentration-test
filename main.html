@@ -540,10 +540,11 @@ const materials = [
 
     function saveToCSV() {
       let csvContent = "data:text/csv;charset=utf-8,";
-      csvContent += "Material,Grams,Cost,Percent,Added Alcohol\n";
+      csvContent += "Material,Grams,Cost,Percent\n";
       chartData.labels.forEach((label, index) => {
-        csvContent += `${label},${chartData.data[index]},${chartData.costs[index]},${chartData.dilutions[index]},${totalAddedAlcohol}\n`;
+        csvContent += `${label},${chartData.data[index]},${chartData.costs[index]},${chartData.dilutions[index]}\n`;
       });
+      csvContent += `Added Alcohol,,${totalAddedAlcohol}\n`;
 
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
@@ -566,13 +567,14 @@ const materials = [
           chartData.costs = [];
           chartData.dilutions = [];
           rows.forEach(row => {
-            const [label, grams, cost, percent, addedAlcohol] = row.split(",");
-            if (label) {
+            const [label, grams, cost, percent] = row.split(",");
+            if (label === "Added Alcohol") {
+              totalAddedAlcohol = parseFloat(cost) || 0;
+            } else if (label) {
               chartData.labels.push(label);
               chartData.data.push(parseFloat(grams));
               chartData.costs.push(parseFloat(cost));
               chartData.dilutions.push(parseInt(percent));
-              totalAddedAlcohol = parseFloat(addedAlcohol) || 0;
             }
           });
           document.getElementById('alcohol-amount').value = totalAddedAlcohol;
