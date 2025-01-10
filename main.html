@@ -264,6 +264,41 @@
       border-radius: 8px;
       font-size: 1.1em;
     }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .csv-button, .create-new-button {
+      padding: 10px 15px;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin: 10px;
+    }
+
+    .csv-button {
+      background-color: #28a745;
+    }
+
+    .csv-button:hover {
+      background-color: #218838;
+      transform: scale(1.1);
+    }
+
+    .create-new-button {
+      background-color: #007bff;
+    }
+
+    .create-new-button:hover {
+      background-color: #0056b3;
+      transform: scale(1.1);
+    }
   </style>
   
 </head>
@@ -282,6 +317,12 @@
     <h2>Selected Materials</h2>
     <div class="selected-materials-container" id="selected-materials">
       <!-- Selected materials appear here -->
+    </div>
+    <div class="button-container">
+      <button class="csv-button" onclick="saveToCSV()">Save to CSV</button>
+      <button class="create-new-button" onclick="createNew()">Create New</button>
+      <label class="csv-button" for="import-csv">Import</label>
+      <input type="file" id="import-csv" accept=".csv" onchange="importFromCSV(event)" style="display: none;" />
     </div>
   </div>
   <div class="concentration">
@@ -368,6 +409,7 @@ const materials = [
         chartData.costs.push(0);
         updateSelectedMaterials();
         updateChart();
+        saveToLocalStorage();
       }
     }
 
@@ -380,6 +422,7 @@ const materials = [
         chartData.costs.splice(index, 1);
         updateSelectedMaterials();
         updateChart();
+        saveToLocalStorage();
       }
     }
 
@@ -411,6 +454,7 @@ const materials = [
       if (index > -1) {
         chartData.data[index] = parseFloat(value) || 0;
         updateChart();
+        saveToLocalStorage();
       }
     }
 
@@ -419,6 +463,7 @@ const materials = [
       if (index > -1) {
         chartData.dilutions[index] = parseInt(value) || 100;
         updateChart();
+        saveToLocalStorage();
       }
     }
 
@@ -427,12 +472,14 @@ const materials = [
       if (index > -1) {
         chartData.costs[index] = parseFloat(value) || 0;
         updateChart();
+        saveToLocalStorage();
       }
     }
 
     function updateAddedAlcohol(value) {
       totalAddedAlcohol = parseFloat(value) || 0;
       updateChart();
+      saveToLocalStorage();
     }
 
     function updateChart() {
@@ -490,6 +537,91 @@ const materials = [
         }
       });
     }
+
+    function saveToCSV() {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += "Material,Grams,Cost,Percent,Added Alcohol\n";
+      chartData.labels.forEach((label, index) => {
+        csvContent += `${label},${chartData.data[index]},${chartData.costs[index]},${chartData.dilutions[index]},${totalAddedAlcohol}\n`;
+      });
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "perfumery_data.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function importFromCSV(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const text = e.target.result;
+          const rows = text.split("\n").slice(1); // Skip header row
+          chartData.labels = [];
+          chartData.data = [];
+          chartData.costs = [];
+          chartData.dilutions = [];
+          rows.forEach(row => {
+            const [label, grams, cost, percent, addedAlcohol] = row.split(",");
+            if (label) {
+              chartData.labels.push(label);
+              chartData.data.push(parseFloat(grams));
+              chartData.costs.push(parseFloat(cost));
+              chartData.dilutions.push(parseInt(percent));
+              totalAddedAlcohol = parseFloat(addedAlcohol) || 0;
+            }
+          });
+          document.getElementById('alcohol-amount').value = totalAddedAlcohol;
+          updateSelectedMaterials();
+          updateChart();
+          saveToLocalStorage();
+        };
+        reader.readAsText(file);
+      }
+    }
+
+    function saveToLocalStorage() {
+      const data = {
+        labels: chartData.labels,
+        data: chartData.data,
+        dilutions: chartData.dilutions,
+        costs: chartData.costs,
+        totalAddedAlcohol: totalAddedAlcohol
+      };
+      localStorage.setItem('perfumeryData', JSON.stringify(data));
+    }
+
+    function loadFromLocalStorage() {
+      const data = JSON.parse(localStorage.getItem('perfumeryData'));
+      if (data) {
+        chartData.labels = data.labels;
+        chartData.data = data.data;
+        chartData.dilutions = data.dilutions;
+        chartData.costs = data.costs;
+        totalAddedAlcohol = data.totalAddedAlcohol;
+        document.getElementById('alcohol-amount').value = totalAddedAlcohol;
+        updateSelectedMaterials();
+        updateChart();
+      }
+    }
+
+    function createNew() {
+      chartData.labels = [];
+      chartData.data = [];
+      chartData.dilutions = [];
+      chartData.costs = [];
+      totalAddedAlcohol = 0;
+      document.getElementById('alcohol-amount').value = totalAddedAlcohol;
+      updateSelectedMaterials();
+      updateChart();
+      saveToLocalStorage();
+    }
+
+    window.onload = loadFromLocalStorage;
 
     renderMaterials();
   </script>
