@@ -432,9 +432,9 @@ const materials = [
       const alcoholByDilution = chartData.data.reduce((sum, val, index) => sum + (val * ((100 - chartData.dilutions[index]) / 100)), 0);
       const totalAlcohol = totalAddedAlcohol + alcoholByDilution;
 
-      totalAlcoholInfo.innerText = `Total Alcohol: ${totalAlcohol.toFixed(3)} grams`;
+      totalAlcoholInfo.innerText = `Total Alcohol: ${totalAlcohol.toFixed(3)} grams (Added: ${totalAddedAlcohol.toFixed(3)} grams, Carriers: ${alcoholByDilution.toFixed(3)} grams)`;
 
-      const totalMaterial = chartData.data.reduce((sum, val, index) => sum + (val * (chartData.dilutions[index] / 100)), 0);
+      const totalMaterial = chartData.data.reduce((sum, val) => sum + val, 0);
       concentrationInfo.innerText = `Total Concentration (Materials Only): ${totalMaterial.toFixed(3)} grams`;
 
       const totalCost = chartData.data.reduce((sum, val, index) => sum + (val * chartData.costs[index]), 0);
@@ -447,16 +447,26 @@ const materials = [
       chart = new Chart(ctx, {
         type: 'pie',
         data: {
-          labels: [...chartData.labels, 'Added Alcohol', 'Alcohol by Dilution'],
+          labels: chartData.labels,
           datasets: [{
-            data: [...chartData.data.map((val, index) => val * (chartData.dilutions[index] / 100)), totalAddedAlcohol, alcoholByDilution],
-            backgroundColor: chartData.labels.map(() => `#${Math.floor(Math.random() * 16777215).toString(16)}`).concat('#FF5733', '#33FF57'),
+            data: chartData.data,
+            backgroundColor: chartData.labels.map(() => `#${Math.floor(Math.random() * 16777215).toString(16)}`),
           }]
         },
         options: {
           responsive: true,
           plugins: {
             legend: { position: 'bottom' },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const index = context.dataIndex;
+                  const grams = chartData.data[index];
+                  const percent = chartData.dilutions[index];
+                  return `${context.label}: ${grams.toFixed(3)} grams (${percent}%)`;
+                }
+              }
+            }
           },
         }
       });
