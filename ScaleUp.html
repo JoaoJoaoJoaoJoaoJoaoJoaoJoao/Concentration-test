@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScaleUp</title>
+    <style>
+        /* Modern styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            flex: 1 1 120px;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 250px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .button-group button {
+            padding: 12px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-group button:hover {
+            background-color: #45a049;
+        }
+
+        .material-list {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .material-item {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .material-item strong {
+            font-size: 16px;
+        }
+
+        .material-item span {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .material-item .total-cost {
+            font-weight: bold;
+            color: #2d8f2f;
+        }
+
+        .csv-button {
+            background-color: #007BFF;
+        }
+
+        .csv-button:hover {
+            background-color: #0056b3;
+        }
+
+        .centered {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scale Up Perfume Formulas</h1>
+
+        <div class="input-group">
+            <label for="materialName">Material Name:</label>
+            <input type="text" id="materialName" placeholder="Enter material name">
+
+            <label for="costPerGram">Cost per gram:</label>
+            <input type="number" id="costPerGram" step="0.01" placeholder="Enter cost per gram">
+
+            <label for="grams">Grams:</label>
+            <input type="number" id="grams" step="0.01" placeholder="Enter grams">
+
+            <label for="percentage">Percentage (%):</label>
+            <input type="number" id="percentage" step="0.01" placeholder="Enter percentage" value="100">
+        </div>
+
+        <div class="button-group">
+            <button id="addMaterialBtn">Add Material</button>
+            <div>
+                <label for="multiplier">Enter Multiplier:</label>
+                <input type="number" id="multiplier" step="0.01" placeholder="Enter multiplier">
+            </div>
+        </div>
+
+        <div id="materialList" class="material-list"></div>
+
+        <div class="button-group centered">
+            <button id="multiplyBtn">Multiply</button>
+            <button id="saveCsvBtn" class="csv-button">Save as CSV</button>
+        </div>
+    </div>
+
+    <script>
+        let materials = [];
+        let multiplyCount = 0;
+
+        document.getElementById('addMaterialBtn').addEventListener('click', addMaterial);
+        document.getElementById('multiplyBtn').addEventListener('click', multiplyGrams);
+        document.getElementById('saveCsvBtn').addEventListener('click', saveAsCSV);
+
+        function addMaterial() {
+            const name = document.getElementById('materialName').value;
+            const costPerGram = parseFloat(document.getElementById('costPerGram').value) || 0;
+            const grams = parseFloat(document.getElementById('grams').value) || 0;
+            const percentage = parseFloat(document.getElementById('percentage').value) || 100;
+
+            if (name && grams > 0) {
+                const totalCost = (costPerGram * grams) / 100;
+                materials.push({ name, costPerGram, grams, percentage, totalCost });
+
+                renderMaterials();
+                resetFields();
+            } else {
+                alert('Please enter a valid material name and grams.');
+            }
+        }
+
+        function renderMaterials() {
+            const materialListDiv = document.getElementById('materialList');
+            materialListDiv.innerHTML = '';
+
+            materials.forEach((material, index) => {
+                const materialDiv = document.createElement('div');
+                materialDiv.className = 'material-item';
+                materialDiv.innerHTML = `
+                    <strong>${material.name}</strong>
+                    <span>Cost per gram: $${material.costPerGram.toFixed(2)}</span>
+                    <span>Grams: ${material.grams.toFixed(2)}</span>
+                    <span>Percentage: ${material.percentage}%</span>
+                    <span class="total-cost">Total Cost: $${material.totalCost.toFixed(2)}</span>
+                `;
+                materialListDiv.appendChild(materialDiv);
+            });
+        }
+
+        function multiplyGrams() {
+            const multiplier = parseFloat(document.getElementById('multiplier').value) || 1;
+
+            if (multiplier <= 0) {
+                alert('Please enter a valid multiplier (greater than 0).');
+                return;
+            }
+
+            materials = materials.map(material => {
+                material.grams *= multiplier;
+                material.totalCost = (material.costPerGram * material.grams) / 100;
+                return material;
+            });
+
+            multiplyCount++;
+            const multiplyBtn = document.getElementById('multiplyBtn');
+            multiplyBtn.textContent = multiplyCount === 1 ? 'Multiply Again' : 'Multiply Again';
+
+            renderMaterials();
+        }
+
+        function saveAsCSV() {
+            let csvContent = "Material Name,Cost per Gram,Grams,Percentage,Total Cost\n";
+            materials.forEach(material => {
+                csvContent += `${material.name},${material.costPerGram.toFixed(2)},${material.grams.toFixed(2)},${material.percentage},${material.totalCost.toFixed(2)}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.setAttribute('href', URL.createObjectURL(blob));
+            link.setAttribute('download', 'materials.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function resetFields() {
+            document.getElementById('materialName').value = '';
+            document.getElementById('costPerGram').value = '';
+            document.getElementById('grams').value = '';
+            document.getElementById('percentage').value = '100';
+            document.getElementById('multiplier').value = '';
+        }
+    </script>
+</body>
+</html>
